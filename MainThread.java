@@ -1,10 +1,12 @@
-/*package mythreading;
-import java.lang.*;
+//package mythreading;
+/*import java.lang.*;
 import java.util.*;
 class Medical extends Thread
 {
 	public void run()
 	{
+	synchronized(this)
+		{
 			try
 			{
 				Thread.sleep(1000);
@@ -12,10 +14,12 @@ class Medical extends Thread
 				Thread.sleep(3000);
 				System.out.println("Medical Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
+	
+		}
 	}
 }
 class Testdrive extends Thread
@@ -31,12 +35,12 @@ class Testdrive extends Thread
 				Thread.sleep(5000);
 				System.out.println("Testdrive Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
-			this.notify();
-		}
+			
+		}this.notify();
 	}
 }
 class Officersign extends Thread
@@ -52,9 +56,9 @@ class Officersign extends Thread
 				Thread.sleep(7000);
 				System.out.println("Officersign Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
 			this.notify();
 		}
@@ -62,7 +66,7 @@ class Officersign extends Thread
 }
 public class MainThread
 {
-	public static void main(String... args) throws InterruptedException
+	public static void main(String[] args) throws InterruptedException
 	{	
 		Medical m=new Medical();
 		m.start();
@@ -80,15 +84,20 @@ public class MainThread
 		
 		Testdrive td=new Testdrive();
 		td.start();
-		
+		synchronized(td)
+		{
+			td.wait();
+		}
+			System.out.println("Congratulation program has runned the way you wanted :) ");
 	}
 }*/
 
 
 //Using join excepton
-package mythreading;
+//package mythreading;
 import java.lang.*;
 import java.util.*;
+
 class Medical extends Thread
 {
 	public void run()
@@ -100,9 +109,9 @@ class Medical extends Thread
 				Thread.sleep(3000);
 				System.out.println("Medical Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
 	}
 }
@@ -117,9 +126,9 @@ class Testdrive extends Thread
 				Thread.sleep(3000);
 				System.out.println("Testdrive Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
 	}
 }
@@ -134,14 +143,14 @@ class Officersign extends Thread
 				Thread.sleep(3000);
 				System.out.println("Officersign Thread Completed."+"\n");
 			}
-			catch(Exception e)
+			catch(InterruptedException e)
 			{
-				System.out.println(e);
+				e.getStackTrace();
 			}
 	}
 }
 
-class TaskComplete extends Thread
+/*class TaskComplete extends Thread
 {
 	public void run()
 	{
@@ -155,7 +164,7 @@ class TaskComplete extends Thread
 				System.out.println(e);
 			}
 	}
-}
+}*/
 
 public class MainThread
 {
@@ -163,18 +172,27 @@ public class MainThread
 	{	
 		Medical m=new Medical();
 		m.start();
-		m.join();
+		try{m.join();}catch(InterruptedException e){e.getStackTrace();}
 		
 		Officersign os=new Officersign();
 		os.start();
-		os.join();
+		try{os.join();}catch(InterruptedException e){e.getStackTrace();}
 		
 		Testdrive td=new Testdrive();
 		td.start();
-		td.join();
+		try{td.join();}catch(InterruptedException e){e.getStackTrace();}
 		
-		TaskComplete tc=new TaskComplete();
-		tc.start();
+		/*TaskComplete tc=new TaskComplete();
+		tc.start();*/
+		try
+			{
+				Thread.sleep(1500);
+				System.out.println("Congratualtions! You have cleared all levels succesfully...");
+			}
+			catch(InterruptedException e)
+			{
+				e.getStackTrace();
+			}
 		
 	}
 }
